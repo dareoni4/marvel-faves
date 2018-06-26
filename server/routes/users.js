@@ -8,7 +8,7 @@ const router = express.Router();
 /**
  * Get a user.
  */
-router.get('/', function(req, res) {
+router.post('/', function(req, res) {
     // ...
 });
 
