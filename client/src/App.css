@@ -52,3 +52,39 @@ a:focus {
     margin: 0 auto;
     max-width: 600px;
 }
+
+/* =Characters
+----------------------------------------------- */
+
+.character-list {
+    list-style: none;
+    margin: 0;
+    max-width: 700px;
+    padding: 0;
+}
+.character {
+    background: #fff;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 10px;
+}
+.character .avatar img {
+    background-color: #eee;
+    object-fit: cover;
+    width: 80px;
+    height: 80px;
+}
+.character .info {
+    display: block;
+    padding: 10px 24px;
+}
+.character .name {
+    display: block;
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+.character .meta {
+    color: #777;
+    font-size: 12px;
+}
