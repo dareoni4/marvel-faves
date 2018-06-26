@@ -24,7 +24,7 @@ app.post('/login', function(req, res) {
 app.get('/verify', function(req, res) {
     // Verify token is still valid.
     // Send back user data.
-    // {token}
+    // {user}
 });
 
 // Modify favs of user.
