@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
+/**
+ * Set up skeleton for how user data should
+ * be structured.
+ */
+const skeleton = {
     username: {
         type: String,
         required: true,
@@ -16,9 +19,26 @@ const userSchema = new mongoose.Schema({
     favs: {
         type: Array,
         default: []
+    },
+    likes: {
+        type: Array,
+        default: []
+    },
+    dislikes: {
+        type: Array,
+        default: []
     }
-});
+};
 
+/**
+ * Create user schema.
+ */
+const userSchema = new mongoose.Schema(skeleton);
+
+/**
+ * Before saving any new user, encrypt
+ * the password.
+ */
 userSchema.pre('save', function(next) {
     var user = this;
     if (!user.isModified('password')) return next();
@@ -29,6 +49,10 @@ userSchema.pre('save', function(next) {
     });
 });
 
+/**
+ * Compare received password with hashed
+ * password.
+ */
 userSchema.methods.checkPassword = function(passwordAttempt, callback) {
     bcrypt.compare(passwordAttempt, this.password, (err, isMatch) => {
         if (err) return callback(err);
@@ -36,6 +60,10 @@ userSchema.methods.checkPassword = function(passwordAttempt, callback) {
     });
 };
 
+/**
+ * When a user object is sent back, delete the
+ * password.
+ */
 userSchema.methods.withoutPassword = function() {
     const user = this.toObject();
     delete user.password;

@@ -19,16 +19,26 @@ authorized.interceptors.request.use(config => {
 const initialState = {
     isLoggedIn: false,
     username: '',
-    faves: []
+    faves: [],
+    likes: [],
+    dislikes: []
 };
 
 // Action Types
 
-const UPDATE_USER = 'UPDATE_USER';
+const UPDATE_USER = 'UPDATE_USER'; // Happens with login() and verify().
 
 const ADD_FAVE = 'ADD_FAVE';
 
 const REMOVE_FAVE = 'REMOVE_FAVE';
+
+const ADD_LIKE = 'ADD_LIKE';
+
+const REMOVE_LIKE = 'REMOVE_LIKE';
+
+const ADD_DISLIKE = 'ADD_DISLIKE';
+
+const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
 
 // Reducer
 
@@ -37,8 +47,16 @@ function reducer(state = initialState, action) {
         case UPDATE_USER:
         // action.user
         case ADD_FAVE:
-        // action.pokemon
+        // action.character
         case REMOVE_FAVE:
+        // action.id
+        case ADD_LIKE:
+        // action.character
+        case REMOVE_LIKE:
+        // action.id
+        case ADD_DISLIKE:
+        // action.character
+        case REMOVE_DISLIKE:
         // action.id
         default:
             return state;
@@ -80,35 +98,105 @@ export function verify() {
 }
 
 /**
- * Add a pokemon to favorites.
+ * Add a character to favorites.
  *
- * @param {Object} pokemon
- * @param {String} pokemon.id
- * @param {String} pokemon.name
- * @param {String} pokemon.experience
- * @param {String} pokemon.height
- * @param {String} pokemon.weight
+ * @param {Object} character
+ * @param {String} character.id
+ * @param {String} character.name
+ * @param {String} character.experience
+ * @param {String} character.height
+ * @param {String} character.weight
  */
-export function addFave(pokemon) {
+export function addFave(character) {
     // authorized.put() ...
     /*
     dispatch({
         type: ADD_FAVE,
-        pokemon
+        character
     });
     */
 }
 
 /**
- * Add a pokemon to favorites.
+ * Remove a character to favorites.
  *
- * @param {String} pokemonId ID of pokemon to delete.
+ * @param {String} characterId ID of character to remove.
  */
 export function removeFave(id) {
     // authorized.put() ...
     /*
     dispatch({
         type: REMOVE_FAVE,
+        id
+    });
+    */
+}
+
+/**
+ * Add a character to likes.
+ *
+ * @param {Object} character
+ * @param {String} character.id
+ * @param {String} character.name
+ * @param {String} character.experience
+ * @param {String} character.height
+ * @param {String} character.weight
+ */
+export function addLike(character) {
+    // authorized.put() ...
+    /*
+    dispatch({
+        type: ADD_LIKE,
+        character
+    });
+    */
+}
+
+/**
+ * Remove a character to likes.
+ *
+ * @param {String} characterId ID of character to remove.
+ */
+export function removeLike(id) {
+    // authorized.put() ...
+    /*
+    dispatch({
+        type: REMOVE_LIKE,
+        id
+    });
+    */
+}
+
+/**
+ * Add a character to dislikes.
+ *
+ * @param {Object} character
+ * @param {String} character.id
+ * @param {String} character.name
+ * @param {String} character.experience
+ * @param {String} character.height
+ * @param {String} character.weight
+ */
+export function addDislike(character) {
+    // authorized.put() ...
+    /*
+    dispatch({
+        type: ADD_DISLIKE,
+        character
+    });
+    */
+}
+
+/**
+ * Remove a character to dislikes.
+ *
+ * @param {String} characterId ID of character to remove.
+ */
+export function removeDislike(id) {
+    // authorized.put() ...
+    /*
+    dispatch({
+        type: REMOVE_DISLIKE,
         id
     });
     */
