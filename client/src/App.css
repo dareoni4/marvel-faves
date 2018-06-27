@@ -45,6 +45,54 @@ a:focus {
     color: #2a6496;
 }
 
+/* =Utilities
+----------------------------------------------- */
+
+/* Loader */
+.loader {
+    background-color: #ddd;
+    border-radius: 100px;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.05);
+    display: block;
+    position: relative;
+    width: 400px;
+    height: 40px;
+}
+.loader:after {
+    background-color: #fff;
+    animation-name: loader-slide;
+    animation-duration: 2s;
+    animation-easing-function: linear;
+    animation-iteration-count: infinite;
+    border-radius: 100px;
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    bottom: 2px;
+    right: 360px;
+}
+@keyframes loader-slide {
+    0% {
+        right: 360px;
+        left: 2px;
+    }
+    5% {
+        left: 2px;
+    }
+    50% {
+        right: 2px;
+        left: 360px;
+    }
+    55% {
+        right: 2px;
+    }
+    100% {
+        right: 360px;
+        left: 2px;
+    }
+}
+
 /* =Layout
 ----------------------------------------------- */
 
@@ -87,4 +135,11 @@ a:focus {
 .character .meta {
     color: #777;
     font-size: 12px;
+}
+
+/* =Search Results
+----------------------------------------------- */
+
+.search-results .loader {
+    margin: 60px auto;
 }

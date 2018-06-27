@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { marvel, cleanCharacters } from '../../utils/characters';
 import SearchField from './SearchField';
+import Loader from '../shared/Loader';
 import CharacterList from '../shared/CharacterList';
 
 /**
@@ -15,6 +16,7 @@ class Home extends Component {
         this.state = {
             searchQuery: '',
             searchError: '',
+            isSearching: false,
             characters: [] // Found characters.
         };
     }
@@ -27,27 +29,61 @@ class Home extends Component {
 
         if (!value) {
             this.setState({
+                isSearching: false,
                 searchError: '',
                 characters: []
             });
         }
 
-        this.setState({ searchQuery: value });
+        this.setState({ searchQuery: value, isSearching: true });
 
         marvel.characters
             .findNameStartsWith(value)
             .then(response => {
+                const searchError = !response.data.length
+                    ? 'No characters found.'
+                    : '';
                 this.setState({
-                    searchError: '',
+                    searchError: searchError,
+                    isSearching: false,
                     characters: cleanCharacters(response.data)
                 });
             })
             .catch(error => {
                 this.setState({
-                    searchError: 'An error occurred.',
+                    searchError: '', // Fail gracefully.
+                    isSearching: false,
                     characters: []
                 });
             });
+    };
+
+    /**
+     * Render the search results.
+     */
+    renderResults = () => {
+        const {
+            searchQuery,
+            searchError,
+            isSearching,
+            characters
+        } = this.state;
+
+        if (!searchQuery) {
+            return null;
+        }
+
+        if (isSearching) {
+            return <Loader />;
+        }
+
+        if (searchError) {
+            return <p className="error">{searchError}</p>;
+        }
+
+        if (characters.length) {
+            return <CharacterList characters={characters} />;
+        }
     };
 
     /**
@@ -56,7 +92,7 @@ class Home extends Component {
      * @return {Component}
      */
     render() {
-        const { searchQuery, characters } = this.state;
+        const { searchQuery } = this.state;
 
         return (
             <div className="view-home">
@@ -65,7 +101,7 @@ class Home extends Component {
                         value={searchQuery}
                         onChange={this.handleSearch}
                     />
-                    {searchQuery && <CharacterList characters={characters} />}
+                    <div className="search-results">{this.renderResults()}</div>
                 </div>
             </div>
         );
