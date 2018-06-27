@@ -45,19 +45,26 @@ const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
 function reducer(state = initialState, action) {
     switch (action.type) {
         case UPDATE_USER:
-        // action.user
+            // action.user
+            return;
         case ADD_FAVE:
-        // action.character
+            // action.character
+            return;
         case REMOVE_FAVE:
-        // action.id
+            // action.id
+            return;
         case ADD_LIKE:
-        // action.character
+            // action.character
+            return;
         case REMOVE_LIKE:
-        // action.id
+            // action.id
+            return;
         case ADD_DISLIKE:
-        // action.character
+            // action.character
+            return;
         case REMOVE_DISLIKE:
-        // action.id
+            // action.id
+            return;
         default:
             return state;
     }
