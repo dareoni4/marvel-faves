@@ -98,7 +98,8 @@ a:focus {
 
 .view-home > .wrap {
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 800px;
+    padding: 50px 0;
 }
 
 /* =Characters
@@ -107,7 +108,6 @@ a:focus {
 .character-list {
     list-style: none;
     margin: 0;
-    max-width: 700px;
     padding: 0;
 }
 .character {
@@ -117,12 +117,16 @@ a:focus {
     margin-bottom: 5px;
     padding: 10px;
 }
+
+/* Avatar */
 .character .avatar img {
     background-color: #eee;
     object-fit: cover;
     width: 80px;
     height: 80px;
 }
+
+/* Info */
 .character .info {
     display: block;
     padding: 10px 24px;
@@ -134,12 +138,34 @@ a:focus {
 }
 .character .meta {
     color: #777;
-    font-size: 12px;
+    font-size: 14px;
+}
+
+/* Actions Menu */
+.character .actions-menu {
+    margin-right: 20px;
+}
+.character .actions-menu ul {
+    display: flex;
+    padding: 10px;
+}
+.character .actions-menu li {
+    padding: 0 8px;
+}
+.character .actions-menu a {
+    color: #666;
+    display: block;
+}
+.character .actions-menu a:hover {
+    color: #101010;
 }
 
 /* =Search Results
 ----------------------------------------------- */
 
+.search-results {
+    padding: 40px 0;
+}
 .search-results .loader {
     margin: 60px auto;
 }

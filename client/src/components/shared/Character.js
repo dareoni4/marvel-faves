@@ -1,4 +1,5 @@
 import React from 'react';
+import MaterialIcon from '@material/react-material-icon';
 
 /**
  * Display a character, both in search results
@@ -24,6 +25,25 @@ const Character = props => {
 
     return (
         <li className="character">
+            <span className="actions-menu">
+                <ul>
+                    <li>
+                        <a href="">
+                            <MaterialIcon icon="favorite_border" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <MaterialIcon icon="thumb_up" />
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <MaterialIcon icon="thumb_down" />
+                        </a>
+                    </li>
+                </ul>
+            </span>
             <span className="avatar">
                 <img src={thumb} alt={name} />
             </span>
