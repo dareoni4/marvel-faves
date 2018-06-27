@@ -27,7 +27,7 @@ h2,
 .h2,
 h3,
 .h3 {
-    color: #333;
+    color: #101010;
     font-weight: 700;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
@@ -161,12 +161,48 @@ a:focus {
     color: #101010;
 }
 
-/* =Search Results
+/* =Search
 ----------------------------------------------- */
 
+/* Search Box */
+.search-field {
+    text-align: center;
+}
+.search-field .search-title {
+    font-family: 'Bangers';
+    font-size: 40px;
+    letter-spacing: 2px;
+    text-shadow: 1px 1px 0 #fff;
+}
+.search-field input {
+    -webkit-appearance: none;
+    border: 4px solid transparent;
+    box-shadow: 0 0 10px rgba(200, 200, 200, 0.5);
+    display: block;
+    font-size: 24px;
+    padding: 40px;
+    text-align: center;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 100%;
+}
+.search-field input:focus {
+    border-color: #de352e;
+    box-shadow: 0 0 10px rgba(222, 53, 46, 0.5);
+    outline: none;
+}
+
+/* Seach Results */
 .search-results {
     padding: 40px 0;
 }
 .search-results .loader {
     margin: 60px auto;
+}
+
+/* No Results */
+.search-results .error {
+    color: #bbb;
+    font-size: 24px;
+    font-style: italic;
+    text-align: center;
 }

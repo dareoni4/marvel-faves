@@ -10,7 +10,12 @@ import React from 'react';
  */
 const SearchField = props => {
     const { value, onChange } = props;
-    return <input value={value} onChange={onChange} />;
+    return (
+        <div className="search-field">
+            <h1 className="search-title">Search for a Marvel Character</h1>
+            <input type="search" value={value} onChange={onChange} />
+        </div>
+    );
 };
 
 export default SearchField;
