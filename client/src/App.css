@@ -112,6 +112,7 @@ a:focus {
 }
 .character {
     background: #fff;
+    box-shadow: 0 0 2px rgba(200, 200, 200, 0.5);
     display: flex;
     align-items: center;
     margin-bottom: 5px;
