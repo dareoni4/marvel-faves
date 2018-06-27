@@ -28,7 +28,7 @@ const Character = props => {
                 <img src={thumb} alt={name} />
             </span>
             <span className="info">
-                <span className="name">{name}</span>
+                <span className="h2 name">{name}</span>
                 <span className="meta">
                     Has appeared in {comics}, {stories}, and {storiesNum}{' '}
                     series.{' '}
