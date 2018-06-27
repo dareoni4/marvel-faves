@@ -1,4 +1,3 @@
-# pokefaves
+# Marvel Faves
 
-dare was here
-hello 
+A basic MERN stack application that allows users to search Marvel characters and favorite, like, and dislike them.

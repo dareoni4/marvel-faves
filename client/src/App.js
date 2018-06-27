@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
+import Home from './components/home';
 import './App.css';
 
+/**
+ * Top-Level Application
+ */
 class App extends Component {
     render() {
         return (
             <div className="App">
-                <p className="App-intro">Working...</p>
+                <Home />
             </div>
         );
     }
