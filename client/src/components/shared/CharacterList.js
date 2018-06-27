@@ -12,7 +12,7 @@ const CharacterList = props => {
     const { characters } = props;
 
     if (!characters.length) {
-        return null;
+        return <p>Loading...</p>;
     }
 
     return (

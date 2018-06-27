@@ -65,7 +65,7 @@ class Home extends Component {
                         value={searchQuery}
                         onChange={this.handleSearch}
                     />
-                    <CharacterList characters={characters} />
+                    {searchQuery && <CharacterList characters={characters} />}
                 </div>
             </div>
         );
