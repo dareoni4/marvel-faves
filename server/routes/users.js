@@ -9,10 +9,28 @@ const router = express.Router();
  * Get all users.
  */
 router.get('/', function(req, res) {
-    User.find((err, users) => {
-        if (err) return res.status(500).send(err);
-        return res.status(200).send(users);
-    });
+    User.find()
+        .then(users => {
+            return res
+                .status(200)
+                .send(users.map(user => user.withoutPassword()));
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        });
+});
+
+/**
+ * Get a user.
+ */
+router.get('/:id', function(req, res) {
+    User.findById(req.params.id)
+        .then(user => {
+            return res.status(200).send(user.withoutPassword());
+        })
+        .catch(err => {
+            return res.status(404).send(err);
+        });
 });
 
 /**
@@ -20,79 +38,117 @@ router.get('/', function(req, res) {
  */
 router.post('/', function(req, res) {
     const user = new User(req.body);
-    user.save((err, newUser) => {
-        if (err) return res.status(500).send(err);
-        return res.status(201).send(newUser);
+    user.save()
+        .then(newUser => {
+            return res.status(201).send(newUser.withoutPassword());
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        });
+});
+
+/* == FAVES/LIKES/DISLIKES ================================ */
+
+/**
+ * Create seperate endpoints for faves, likes, and
+ * dislikes, which all perform the same, basic tasks.
+ *
+ * RULES:
+ * 1. When adding a character it must id, name, and
+ *    thumb attributes.
+ * 2. To add a character, it must not exist already.
+ * 3. To remove a character, it must (obiously) exist.
+ */
+['faves', 'likes', 'dislikes'].forEach(function(endpoint) {
+    /**
+     * Get all faves/likes/dislikes for a user.
+     */
+    router.get(`/:id/${endpoint}`, function(req, res) {
+        User.findById(req.params.id)
+            .then(user => {
+                return res.status(200).send(user[endpoint]);
+            })
+            .catch(err => {
+                return res.status(404).send(err);
+            });
     });
-});
 
-/* == FAVES ================================ */
+    /**
+     * Add a character to user's faves/likes/dislikes.
+     */
+    router.post(`/:id/${endpoint}`, function(req, res) {
+        const newItem = req.body;
+        const required = ['id', 'name', 'thumb'];
 
-/**
- * Get all faves for a user.
- */
-router.get('/:id/faves', function(req, res) {
-    // ...
-});
+        // New character to add must have required attributes.
+        for (let i = 0; i < required.length; i++) {
+            let attribute = required[i];
 
-/**
- * Add a fave to a user.
- */
-router.post('/:id/faves', function(req, res) {
-    // ...
-});
+            if (!newItem[attribute]) {
+                return res.status(500).send({
+                    message: `Item "${attribute}" missing.`
+                });
+            }
+        }
 
-/**
- * Remove a fave from a user.
- */
-router.delete('/:id/faves', function(req, res) {
-    // ...
-});
+        User.findById(req.params.id)
+            .then(user => {
+                const currentItems = user[endpoint];
 
-/* == LIKES ================================ */
+                // Only add the character if doesn't already exist; and
+                // if not, just let the promise chain move forward, not
+                // actually updating anything.
+                if (!currentItems.find(item => item.id === newItem.id)) {
+                    currentItems.push({
+                        link: '',
+                        comicsNum: 0,
+                        seriesNum: 0,
+                        storiesNum: 0,
+                        ...newItem
+                    });
+                }
 
-/**
- * Get all likes for a user.
- */
-router.get('/:id/likes', function(req, res) {
-    // ...
-});
+                return user.update({ [endpoint]: currentItems });
+            })
+            .then(() => {
+                return res
+                    .status(200)
+                    .send({ message: `Character added to ${endpoint}.` });
+            })
+            .catch(err => {
+                return res.status(500).send(err);
+            });
+    });
 
-/**
- * Add a like to a user.
- */
-router.post('/:id/likes', function(req, res) {
-    // ...
-});
+    /**
+     * Remove a character from user's faves/likes/dislikes.
+     */
+    router.delete(`/:id/${endpoint}/:toRemove`, function(req, res) {
+        User.findById(req.params.id)
+            .then(user => {
+                const currentItems = user[endpoint];
+                const toRemoveIndex = currentItems.findIndex(
+                    item => item.id === req.params.toRemove
+                );
 
-/**
- * Remove a like from a user.
- */
-router.delete('/:id/likes', function(req, res) {
-    // ...
-});
+                // Only remove the item if it actually exists; and if
+                // not, just let the promise chain move forward, not
+                // actually updating anything.
+                if (toRemoveIndex < 0) {
+                    currentItems.splice(toRemoveIndex, 1);
+                }
 
-/* == DISLIKES ================================ */
-
-/**
- * Get all dislikes for a user.
- */
-router.get('/:id/dislikes', function(req, res) {
-    // ...
-});
-
-/**
- * Add a dislike to a user.
- */
-router.post('/:id/dislikes', function(req, res) {
-    // ...
-});
-
-/**
- * Remove a dislike from a user.
- */
-router.delete('/:id/dislikes', function(req, res) {
-    // ...
+                return user.update({ [endpoint]: currentItems });
+            })
+            .then(() => {
+                return res
+                    .status(200)
+                    .send({ message: `Character removed from ${endpoint}.` });
+            })
+            .catch(err => {
+                return res.status(500).send(err);
+            });
+    });
 });
 
 module.exports = router;
