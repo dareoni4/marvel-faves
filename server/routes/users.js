@@ -1,6 +1,11 @@
 const express = require('express');
+const jwtValidate = require('express-jwt');
+const secret = process.env.SECRET || 'secret_for_dev';
 const User = require('../models/user');
 
+/**
+ * Begin /users router.
+ */
 const router = express.Router();
 
 /* == GENERAL ================================ */
@@ -21,9 +26,9 @@ router.get('/', function(req, res) {
 });
 
 /**
- * Get a user.
+ * Get a single user.
  */
-router.get('/:id', function(req, res) {
+router.get('/:id', (req, res) => {
     User.findById(req.params.id)
         .then(user => {
             return res.status(200).send(user.withoutPassword());
@@ -36,7 +41,7 @@ router.get('/:id', function(req, res) {
 /**
  * Add a new user.
  */
-router.post('/', function(req, res) {
+router.post('/', jwtValidate({ secret }), (req, res) => {
     const user = new User(req.body);
     user.save()
         .then(newUser => {
@@ -53,17 +58,21 @@ router.post('/', function(req, res) {
  * Create seperate endpoints for faves, likes, and
  * dislikes, which all perform the same, basic tasks.
  *
- * RULES:
+ * Rules:
  * 1. When adding a character it must id, name, and
  *    thumb attributes.
  * 2. To add a character, it must not exist already.
- * 3. To remove a character, it must (obiously) exist.
+ * 3. To add a character, user must be logged in and
+ *    adding to their own faves/likes/dislikes.
+ * 4. To remove a character, it must (obiously) exist.
+ * 5. To remove a character, user must be logged in and
+ *    removing from their own faves/likes/dislikes.
  */
 ['faves', 'likes', 'dislikes'].forEach(function(endpoint) {
     /**
      * Get all faves/likes/dislikes for a user.
      */
-    router.get(`/:id/${endpoint}`, function(req, res) {
+    router.get(`/:id/${endpoint}`, (req, res) => {
         User.findById(req.params.id)
             .then(user => {
                 return res.status(200).send(user[endpoint]);
@@ -75,10 +84,20 @@ router.post('/', function(req, res) {
 
     /**
      * Add a character to user's faves/likes/dislikes.
+     *
+     * Authorization is required and the current user
+     * must be editing their own faves/likes/dislikes.
      */
-    router.post(`/:id/${endpoint}`, function(req, res) {
+    router.post(`/:id/${endpoint}`, jwtValidate({ secret }), (req, res) => {
         const newItem = req.body;
         const required = ['id', 'name', 'thumb'];
+
+        // Make sure logged-in user matches user being edited.
+        if (req.user._id !== req.params.id) {
+            return res.status(403).send({
+                message: `You can only edit your own ${endpoint}.`
+            });
+        }
 
         // New character to add must have required attributes.
         for (let i = 0; i < required.length; i++) {
@@ -122,33 +141,50 @@ router.post('/', function(req, res) {
 
     /**
      * Remove a character from user's faves/likes/dislikes.
+     *
+     * Authorization is required and the current user
+     * must be removing their own faves/likes/dislikes.
      */
-    router.delete(`/:id/${endpoint}/:toRemove`, function(req, res) {
-        User.findById(req.params.id)
-            .then(user => {
-                const currentItems = user[endpoint];
-                const toRemoveIndex = currentItems.findIndex(
-                    item => item.id === req.params.toRemove
-                );
+    router.delete(
+        `/:id/${endpoint}/:toRemove`,
+        jwtValidate({ secret }),
+        (req, res) => {
+            // Make sure logged-in user matches user being edited.
+            if (req.user._id !== req.params.id) {
+                return res.status(403).send({
+                    message: `You can only edit your own ${endpoint}.`
+                });
+            }
 
-                // Only remove the item if it actually exists; and if
-                // not, just let the promise chain move forward, not
-                // actually updating anything.
-                if (toRemoveIndex < 0) {
-                    currentItems.splice(toRemoveIndex, 1);
-                }
+            User.findById(req.params.id)
+                .then(user => {
+                    const currentItems = user[endpoint];
+                    const toRemoveIndex = currentItems.findIndex(
+                        item => item.id === req.params.toRemove
+                    );
 
-                return user.update({ [endpoint]: currentItems });
-            })
-            .then(() => {
-                return res
-                    .status(200)
-                    .send({ message: `Character removed from ${endpoint}.` });
-            })
-            .catch(err => {
-                return res.status(500).send(err);
-            });
-    });
+                    // Only remove the item if it actually exists; and if
+                    // not, just let the promise chain move forward, not
+                    // actually updating anything.
+                    if (toRemoveIndex < 0) {
+                        currentItems.splice(toRemoveIndex, 1);
+                    }
+
+                    return user.update({ [endpoint]: currentItems });
+                })
+                .then(() => {
+                    return res.status(200).send({
+                        message: `Character removed from ${endpoint}.`
+                    });
+                })
+                .catch(err => {
+                    return res.status(500).send(err);
+                });
+        }
+    );
 });
 
+/**
+ * Export /users router.
+ */
 module.exports = router;
