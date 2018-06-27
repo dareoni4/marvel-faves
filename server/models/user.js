@@ -16,7 +16,7 @@ const skeleton = {
         type: String,
         required: true
     },
-    favs: {
+    faves: {
         type: Array,
         default: []
     },
