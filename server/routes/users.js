@@ -6,17 +6,24 @@ const router = express.Router();
 /* == GENERAL ================================ */
 
 /**
- * Get a user.
+ * Get all users.
  */
-router.post('/', function(req, res) {
-    // ...
+router.get('/', function(req, res) {
+    User.find((err, users) => {
+        if (err) return res.status(500).send(err);
+        return res.status(200).send(users);
+    });
 });
 
 /**
  * Add a new user.
  */
 router.post('/', function(req, res) {
-    // ...
+    const user = new User(req.body);
+    user.save((err, newUser) => {
+        if (err) return res.status(500).send(err);
+        return res.status(201).send(newUser);
+    });
 });
 
 /* == FAVES ================================ */
