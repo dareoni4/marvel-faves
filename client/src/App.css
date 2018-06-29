@@ -100,17 +100,86 @@ a:focus {
     }
 }
 
+/* =Forms
+----------------------------------------------- */
+
+/* Labels */
+label {
+    color: #333;
+    display: inline-block;
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 4px 15px 4px;
+    max-width: 100%;
+}
+
+/* Fields */
+input[type='email'],
+input[type='password'],
+input[type='text'] {
+    -webkit-appearance: none;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 0;
+    border: 1px solid rgba(176, 176, 176, 0.4);
+    color: rgba(50, 50, 50, 0.7);
+    display: block;
+    font-size: 14px;
+    height: 50px;
+    line-height: 16px;
+    margin: 0 0 15px 0;
+    padding: 16px 18px;
+    width: 100%;
+}
+input[type='email']:focus,
+input[type='password']:focus,
+input[type='text']:focus {
+    border-color: #de352e;
+    box-shadow: 0 0 10px rgba(222, 53, 46, 0.5);
+    outline: 0;
+}
+
+/* Buttons */
+button {
+    background-color: #de352e;
+    border: 2px solid transparent;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 16px;
+    margin-bottom: 0;
+    padding: 15px 22px;
+    text-align: center;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    transition: background-color 0.2s ease-out;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+button:hover {
+    background-color: #101010;
+}
+
 /* =Layout
 ----------------------------------------------- */
 
 .view-home > .wrap,
 .view-faves > .wrap,
-.view-login > .wrap,
-.view-register > .wrap,
 .view-not-found > .wrap {
     margin: 0 auto;
     max-width: 800px;
     padding: 50px 0;
+}
+.view-login > .wrap,
+.view-register > .wrap {
+    background: #fff;
+    box-shadow: 0 0 2px rgba(200, 200, 200, 0.5);
+    margin: 40px auto;
+    max-width: 550px;
+    padding: 40px 60px;
 }
 
 /* =Characters
@@ -186,7 +255,6 @@ a:focus {
     text-shadow: 1px 1px 0 #fff;
 }
 .search-field input {
-    -webkit-appearance: none;
     border: 4px solid transparent;
     box-shadow: 0 0 10px rgba(200, 200, 200, 0.5);
     display: block;
@@ -199,7 +267,6 @@ a:focus {
 .search-field input:focus {
     border-color: #de352e;
     box-shadow: 0 0 10px rgba(222, 53, 46, 0.5);
-    outline: none;
 }
 
 /* Seach Results */
