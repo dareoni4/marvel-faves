@@ -193,6 +193,19 @@ button:hover {
     padding: 40px 60px;
 }
 
+/* Main Menu */
+nav {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+nav ul {
+    display: flex;
+}
+nav li {
+    margin: 0 5px;
+}
+
 /* =Characters
 ----------------------------------------------- */
 

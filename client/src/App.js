@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { verify } from './store';
 
 // Components
+import Menu from './components/shared/Menu';
 import Home from './components/home';
 import Login from './components/login';
 import Register from './components/register';
@@ -40,6 +41,7 @@ class App extends Component {
 
         return (
             <div className="App">
+                <Menu />
                 {isLoaded && (
                     <Switch>
                         <Route exact path="/" component={Home} />
