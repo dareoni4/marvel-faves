@@ -2,6 +2,7 @@
     "name": "client",
     "version": "0.1.0",
     "private": true,
+    "proxy": "http://localhost:8888",
     "dependencies": {
         "@material/react-material-icon": "^0.3.0",
         "ajv": "^6.5.1",

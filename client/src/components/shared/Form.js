@@ -49,7 +49,8 @@ class Form extends Component {
         return this.props.render({
             handleSubmit: this.handleSubmit,
             handleChange: this.handleChange,
-            inputs: this.state.inputs
+            inputs: this.state.inputs,
+            error: this.props.error
         });
     }
 }

@@ -4,13 +4,18 @@ import React from 'react';
  * Display registration form, to create a
  * new user.
  *
+ * @param {Object}   props              Component properties.
+ * @param {Function} props.handleSubmit Handles form submission.
+ * @param {Function} props.handleChange Handles input changes.
+ * @param {Object}   props.inputs       Controlled input values.
  * @return {Component}
  */
 const RegisterForm = props => {
-    const { handleSubmit, handleChange, inputs } = props;
+    const { handleSubmit, handleChange, inputs, error } = props;
 
     return (
         <form onSubmit={handleSubmit}>
+            {error && <p className="error">{error}</p>}
             <p>
                 <label>Username</label>
                 <input

@@ -10,6 +10,23 @@ const User = require('../models/user');
 const router = express.Router();
 
 /**
+ * Register a new user.
+ */
+router.post('/register', (req, res) => {
+    const user = new User(req.body);
+    user.save()
+        .then(newUser => {
+            const token = jwt.sign(user.toObject(), secret, {
+                expiresIn: '24h'
+            });
+            return res.status(201).send({ token, user: user.withoutPassword() }); // prettier-ignore
+        })
+        .catch(err => {
+            return res.status(500).send(err);
+        });
+});
+
+/**
  * Login and get back a token.
  */
 router.post('/login', function(req, res) {

@@ -38,20 +38,6 @@ router.get('/:id', (req, res) => {
         });
 });
 
-/**
- * Add a new user.
- */
-router.post('/', jwtValidate({ secret }), (req, res) => {
-    const user = new User(req.body);
-    user.save()
-        .then(newUser => {
-            return res.status(201).send(newUser.withoutPassword());
-        })
-        .catch(err => {
-            return res.status(500).send(err);
-        });
-});
-
 /* == FAVES/LIKES/DISLIKES ================================ */
 
 /**

@@ -9,16 +9,17 @@ import thunk from 'redux-thunk';
 const authorized = axios.create();
 
 authorized.interceptors.request.use(config => {
-    const token = localStorage.getItem('token');
-    config.headers.Authorization = `Bearer ${token}`;
+    config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
     return config;
 });
 
 // Intial State
 
 const initialState = {
+    isLoading: true,
     isLoggedIn: false,
     username: '',
+    email: '',
     faves: [],
     likes: [],
     dislikes: []
@@ -26,7 +27,11 @@ const initialState = {
 
 // Action Types
 
-const UPDATE_USER = 'UPDATE_USER'; // Happens with login() and verify().
+const AUTHENTICATE = 'AUTHENTICATE'; // Happens with login() and verify().
+
+const STOP_LOADING = 'STOP_LOADING';
+
+const LOGOUT = 'LOGOUT';
 
 const ADD_FAVE = 'ADD_FAVE';
 
@@ -44,9 +49,23 @@ const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
 
 function reducer(state = initialState, action) {
     switch (action.type) {
-        case UPDATE_USER:
-            // action.user
-            return;
+        case AUTHENTICATE:
+            return {
+                ...state,
+                isLoading: false,
+                isLoggedIn: true,
+                ...action.user
+            };
+        case STOP_LOADING:
+            return {
+                ...state,
+                isLoading: false
+            };
+        case LOGOUT:
+            return {
+                ...initialState,
+                isLoading: false
+            };
         case ADD_FAVE:
             // action.character
             return;
@@ -73,18 +92,44 @@ function reducer(state = initialState, action) {
 // Actions
 
 /**
+ * Register a new user.
+ *
+ * Get your free login tokens here!
+ *
+ * @param {Object} data          Data submitted from form.
+ * @param {String} data.username Username.
+ * @param {String} data.email    Email.
+ * @param {String} data.password Password.
+ */
+export function register(data) {
+    return dispatch => {
+        return axios.post('/auth/register', data).then(response => {
+            localStorage.setItem('token', response.data.token);
+            dispatch({
+                type: AUTHENTICATE,
+                user: response.data.user
+            });
+        });
+    };
+}
+
+/**
  * Log in user and get back user data
  * and token.
+ *
+ * @param {Object} data          Data submitted from form.
+ * @param {String} data.username Username.
+ * @param {String} data.password Password.
  */
-export function login() {
+export function login(credentials) {
     return dispatch => {
-        // axios.post() ...
-        /*
-        dispatch({
-          type: UPDATE_USER,
-          user
+        return axios.post('/auth/login', credentials).then(response => {
+            localStorage.setItem('token', response.data.token);
+            dispatch({
+                type: AUTHENTICATE,
+                user: response.data.user
+            });
         });
-        */
     };
 }
 
@@ -94,13 +139,38 @@ export function login() {
  */
 export function verify() {
     return dispatch => {
-        // authorized.get() ...
-        /*
-        dispatch({
-          type: UPDATE_USER,
-          user
-        });
-        */
+        if (!localStorage.getItem('token')) {
+            dispatch({
+                type: STOP_LOADING
+            });
+            return;
+        }
+
+        return authorized
+            .get('/auth/verify')
+            .then(response => {
+                dispatch({
+                    type: AUTHENTICATE,
+                    user: response.data.user
+                });
+            })
+            .catch(error => {
+                dispatch({
+                    type: STOP_LOADING
+                });
+            });
+    };
+}
+
+/**
+ * Log out user.
+ *
+ * This resets auth state and delete token.
+ */
+export function logout() {
+    localStorage.removeItem('token');
+    return {
+        type: LOGOUT
     };
 }
 
