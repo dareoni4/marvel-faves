@@ -1,13 +1,13 @@
 import React from 'react';
 
-const Login = () => {
+const Faves = () => {
     return (
-        <div className="view-login">
+        <div className="view-faves">
             <div className="wrap">
-                <p>LOGIN</p>
+                <p>FAVES</p>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default Faves;
