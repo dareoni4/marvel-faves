@@ -1,5 +1,11 @@
 import React from 'react';
 
+/**
+ * Display not-found view, when no route
+ * exists.
+ *
+ * @return {Component}
+ */
 const NotFound = () => {
     return (
         <div className="view-not-found">
