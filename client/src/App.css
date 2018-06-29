@@ -178,7 +178,7 @@ button:hover {
 ----------------------------------------------- */
 
 .view-home > .wrap,
-.view-faves > .wrap,
+.view-profile > .wrap,
 .view-not-found > .wrap {
     margin: 0 auto;
     max-width: 800px;

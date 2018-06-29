@@ -151,7 +151,7 @@ export function verify() {
             .then(response => {
                 dispatch({
                     type: AUTHENTICATE,
-                    user: response.data.user
+                    user: response.data
                 });
             })
             .catch(error => {
