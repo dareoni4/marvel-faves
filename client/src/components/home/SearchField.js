@@ -13,7 +13,12 @@ const SearchField = props => {
     return (
         <div className="search-field">
             <h1 className="search-title">Marvel Character Search</h1>
-            <input type="search" value={value} onChange={onChange} />
+            <input
+                type="search"
+                placeholder="Start typing..."
+                value={value}
+                onChange={onChange}
+            />
         </div>
     );
 };

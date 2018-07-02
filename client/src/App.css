@@ -317,6 +317,7 @@ nav li {
     box-shadow: 0 0 10px rgba(200, 200, 200, 0.5);
     display: block;
     font-size: 24px;
+    outline: none;
     padding: 40px;
     text-align: center;
     transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -325,6 +326,28 @@ nav li {
 .search-field input:focus {
     border-color: #de352e;
     box-shadow: 0 0 10px rgba(222, 53, 46, 0.5);
+}
+
+/* Placeholder Text */
+input::-webkit-input-placeholder {
+    color: rgba(152, 152, 152, 0.5);
+    font-style: italic;
+}
+input::-moz-placeholder {
+    color: rgba(152, 152, 152, 0.5);
+    font-style: italic;
+}
+input:-ms-input-placeholder {
+    color: rgba(152, 152, 152, 0.5);
+    font-style: italic;
+}
+input::-ms-input-placeholder {
+    color: rgba(152, 152, 152, 0.5);
+    font-style: italic;
+}
+input::placeholder {
+    color: rgba(152, 152, 152, 0.5);
+    font-style: italic;
 }
 
 /* Seach Results */
