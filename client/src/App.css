@@ -41,7 +41,10 @@ h3,
     margin: 0 0 24px 0;
 }
 h1 {
-    font-size: 30px;
+    font-size: 50px;
+}
+h2 {
+    font-size: 25px;
 }
 
 /* Links */
@@ -226,6 +229,7 @@ nav li {
 /* Avatar */
 .character .avatar img {
     background-color: #eee;
+    display: block;
     object-fit: cover;
     width: 80px;
     height: 80px;
@@ -263,6 +267,36 @@ nav li {
 }
 .character .actions-menu a:hover {
     color: #101010;
+}
+
+/* Trash Link (profile only) */
+.character .remove {
+    display: block;
+    margin-left: auto;
+    padding: 0 30px;
+}
+.character .remove a {
+    color: #666;
+}
+.character .remove a:hover {
+    color: #e74c3c;
+}
+.character .remove .material-icons {
+    font-size: 36px;
+}
+
+/* Selected Items */
+.is-faved .actions-menu .action-fave,
+.is-faved .actions-menu .action-fave:hover {
+    color: #ff69b4;
+}
+.is-liked .actions-menu .action-like,
+.is-liked .actions-menu .action-like:hover {
+    color: #2ecc71;
+}
+.is-disliked .actions-menu .action-dislike,
+.is-disliked .actions-menu .action-dislike:hover {
+    color: #e74c3c;
 }
 
 /* =Search
@@ -307,4 +341,31 @@ nav li {
     font-size: 24px;
     font-style: italic;
     text-align: center;
+}
+
+/* =Profile
+----------------------------------------------- */
+
+/* Headinges */
+.view-profile .tagline {
+    font-weight: normal;
+    font-size: 16px;
+    color: #666;
+    margin-left: 10px;
+}
+.view-profile h2 {
+    margin-left: 2px;
+}
+
+/* Lists */
+.view-profile .characters-list {
+    margin-bottom: 60px;
+}
+
+/* No Items */
+.view-profile .no-items {
+    font-style: italic;
+    color: #999;
+    margin-bottom: 60px;
+    margin-left: 2px;
 }

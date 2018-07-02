@@ -33,22 +33,15 @@ const STOP_LOADING = 'STOP_LOADING';
 
 const LOGOUT = 'LOGOUT';
 
-const ADD_FAVE = 'ADD_FAVE';
+const ADD_ITEM = 'ADD_ITEM';
 
-const REMOVE_FAVE = 'REMOVE_FAVE';
-
-const ADD_LIKE = 'ADD_LIKE';
-
-const REMOVE_LIKE = 'REMOVE_LIKE';
-
-const ADD_DISLIKE = 'ADD_DISLIKE';
-
-const REMOVE_DISLIKE = 'REMOVE_DISLIKE';
+const REMOVE_ITEM = 'REMOVE_ITEM';
 
 // Reducer
 
 function reducer(state = initialState, action) {
     switch (action.type) {
+        // Add authenticated user credentials.
         case AUTHENTICATE:
             return {
                 ...state,
@@ -56,34 +49,46 @@ function reducer(state = initialState, action) {
                 isLoggedIn: true,
                 ...action.user
             };
+
+        // Application is done loading.
         case STOP_LOADING:
             return {
                 ...state,
                 isLoading: false
             };
+
+        // Log out current user.
         case LOGOUT:
             return {
                 ...initialState,
                 isLoading: false
             };
-        case ADD_FAVE:
-            // action.character
-            return;
-        case REMOVE_FAVE:
-            // action.id
-            return;
-        case ADD_LIKE:
-            // action.character
-            return;
-        case REMOVE_LIKE:
-            // action.id
-            return;
-        case ADD_DISLIKE:
-            // action.character
-            return;
-        case REMOVE_DISLIKE:
-            // action.id
-            return;
+
+        // Add character to faves, likes, or dislikes.
+        case ADD_ITEM:
+            var items = [...state[action.itemType]];
+            const character = action.character;
+
+            if (!items.find(item => item.id === character.id)) {
+                items.push(character);
+            }
+
+            return {
+                ...state,
+                [action.itemType]: items
+            };
+
+        // Remove character from faves, likes, or dislikes.
+        case REMOVE_ITEM:
+            var items = state[action.itemType].filter(
+                item => item.id !== action.characterId
+            );
+
+            return {
+                ...state,
+                [action.itemType]: items
+            };
+
         default:
             return state;
     }
@@ -175,108 +180,59 @@ export function logout() {
 }
 
 /**
- * Add a character to favorites.
+ * Add a character to faves, likes or dislikes.
  *
- * @param {Object} character
+ * @param {String} type                 Type of item to add, `faves`, `likes` or `dislikes`.
+ * @param {String} userId               Current user ID.
+ * @param {Object} character            Character to add.
  * @param {String} character.id
  * @param {String} character.name
- * @param {String} character.experience
- * @param {String} character.height
- * @param {String} character.weight
+ * @param {String} character.thumb
+ * @param {String} character.link
+ * @param {Number} character.comicsNum
+ * @param {Number} character.seriesNum
+ * @param {Number} character.storiesNum
  */
-export function addFave(character) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: ADD_FAVE,
-        character
-    });
-    */
+export function addItem(type, userId, character) {
+    return dispatch => {
+        authorized
+            .post(`/users/${userId}/${type}`, character)
+            .then(response => {
+                dispatch({
+                    type: ADD_ITEM,
+                    itemType: type,
+                    character
+                });
+            })
+            .catch(error => {
+                console.dir(error);
+            });
+    };
 }
 
 /**
- * Remove a character to favorites.
+ * Remove a character from faves, likes or dislikes.
  *
- * @param {String} characterId ID of character to remove.
+ * @param {String} type        Type of item to add, `faves`, `likes` or `dislikes`.
+ * @param {String} userId      Current user ID.
+ * @param {String} characterId Character ID to remove.
  */
-export function removeFave(id) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: REMOVE_FAVE,
-        id
-    });
-    */
-}
-
-/**
- * Add a character to likes.
- *
- * @param {Object} character
- * @param {String} character.id
- * @param {String} character.name
- * @param {String} character.experience
- * @param {String} character.height
- * @param {String} character.weight
- */
-export function addLike(character) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: ADD_LIKE,
-        character
-    });
-    */
-}
-
-/**
- * Remove a character to likes.
- *
- * @param {String} characterId ID of character to remove.
- */
-export function removeLike(id) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: REMOVE_LIKE,
-        id
-    });
-    */
-}
-
-/**
- * Add a character to dislikes.
- *
- * @param {Object} character
- * @param {String} character.id
- * @param {String} character.name
- * @param {String} character.experience
- * @param {String} character.height
- * @param {String} character.weight
- */
-export function addDislike(character) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: ADD_DISLIKE,
-        character
-    });
-    */
-}
-
-/**
- * Remove a character to dislikes.
- *
- * @param {String} characterId ID of character to remove.
- */
-export function removeDislike(id) {
-    // authorized.put() ...
-    /*
-    dispatch({
-        type: REMOVE_DISLIKE,
-        id
-    });
-    */
+export function removeItem(type, userId, characterId) {
+    return dispatch => {
+        authorized
+            .delete(`/users/${userId}/${type}/${characterId}`)
+            .then(response => {
+                console.log(response);
+                dispatch({
+                    type: REMOVE_ITEM,
+                    itemType: type,
+                    characterId
+                });
+            })
+            .catch(error => {
+                console.dir(error);
+            });
+    };
 }
 
 /**

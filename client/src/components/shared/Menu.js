@@ -10,7 +10,7 @@ const Menu = props => {
         <nav>
             <ul>
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/">Search</Link>
                 </li>
                 {isLoggedIn ? (
                     <React.Fragment>

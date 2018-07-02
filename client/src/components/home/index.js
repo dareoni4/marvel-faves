@@ -82,7 +82,7 @@ class Home extends Component {
         }
 
         if (characters.length) {
-            return <CharacterList characters={characters} />;
+            return <CharacterList characters={characters} context="search" />;
         }
     };
 

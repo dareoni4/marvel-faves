@@ -7,9 +7,10 @@ import Character from '../shared/Character';
  *
  * @param {Object} props            Component properties.
  * @param {Array}  props.characters Items produced from search query.
+ * @param {String} props.context    Context of display, `search` or `faves`, `likes` or `dislikes`.
  */
 const CharacterList = props => {
-    const { characters } = props;
+    const { characters, context } = props;
 
     if (!characters.length) {
         return <p>Loading...</p>;
@@ -22,6 +23,7 @@ const CharacterList = props => {
                     return (
                         <Character
                             key={character.id}
+                            context={context}
                             id={character.id}
                             name={character.name}
                             thumb={character.thumb}
