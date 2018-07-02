@@ -116,6 +116,7 @@ class Character extends Component {
      */
     render() {
         const {
+            user,
             context,
             name,
             thumb,
@@ -140,54 +141,55 @@ class Character extends Component {
 
         return (
             <li className={characterClassNames}>
-                {context === 'search' && (
-                    <span className="actions-menu">
-                        <ul>
-                            <li>
-                                <a
-                                    href="add-fave"
-                                    className="action-fave"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.handleClick('faves');
-                                    }}
-                                >
-                                    <MaterialIcon
-                                        icon={
-                                            this.isFaved()
-                                                ? 'favorite'
-                                                : 'favorite_border'
-                                        }
-                                    />
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#add-like"
-                                    className="action-like"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.handleClick('likes');
-                                    }}
-                                >
-                                    <MaterialIcon icon="thumb_up" />
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#remove-like"
-                                    className="action-dislike"
-                                    onClick={e => {
-                                        e.preventDefault();
-                                        this.handleClick('dislikes');
-                                    }}
-                                >
-                                    <MaterialIcon icon="thumb_down" />
-                                </a>
-                            </li>
-                        </ul>
-                    </span>
-                )}
+                {context === 'search' &&
+                    user.isLoggedIn && (
+                        <span className="actions-menu">
+                            <ul>
+                                <li>
+                                    <a
+                                        href="add-fave"
+                                        className="action-fave"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.handleClick('faves');
+                                        }}
+                                    >
+                                        <MaterialIcon
+                                            icon={
+                                                this.isFaved()
+                                                    ? 'favorite'
+                                                    : 'favorite_border'
+                                            }
+                                        />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="#add-like"
+                                        className="action-like"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.handleClick('likes');
+                                        }}
+                                    >
+                                        <MaterialIcon icon="thumb_up" />
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="#remove-like"
+                                        className="action-dislike"
+                                        onClick={e => {
+                                            e.preventDefault();
+                                            this.handleClick('dislikes');
+                                        }}
+                                    >
+                                        <MaterialIcon icon="thumb_down" />
+                                    </a>
+                                </li>
+                            </ul>
+                        </span>
+                    )}
                 <span className="avatar">
                     <img src={thumb} alt={name} />
                 </span>
